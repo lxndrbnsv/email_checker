@@ -203,7 +203,7 @@ class Yahoo:
         browser.get("https://yahoo.com/login")
         # accept_cookies()  # Закомментировать, если используем русские прокси.
         if move_to_restore_page() is True:
-            result = check_email(email.replace("@yahoo.com", ""))
+            result = check_email(email.split("@", 1)[0])
         else:
             result = "Error while opening restore account page!"
         browser.quit()
