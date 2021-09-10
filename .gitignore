@@ -4,3 +4,4 @@ webdriver/
 __pycache__/
 *~
 tests/
+*.log
