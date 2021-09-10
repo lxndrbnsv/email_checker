@@ -23,6 +23,11 @@ def if_email_exists():
                 status="ERROR",
                 msg="Missing email key."
             )
+        elif "@" not in email:
+            return jsonify(
+                status="ERROR",
+                msg="Incorrect email address."
+            )
     except KeyError:
         return jsonify(
             status="ERROR",
