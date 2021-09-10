@@ -15,7 +15,7 @@ from pyvirtualdisplay import Display
 
 
 class MailRu:
-    def __init__(self, email, proxy, user_agent):
+    def __init__(self, email, proxy, user_agent, username, password):
         def check(mail, p, ua):
             url = "https://account.mail.ru/api/v1/user/password/restore"
             headers = {
@@ -32,7 +32,7 @@ class MailRu:
 
             data = dict(email=mail)
 
-            proxy_dict = {"http": f"http://username:password@{p}"}
+            proxy_dict = {"http": f"http://{username}:{password}@{p}"}
 
             r = requests.post(url, headers=headers, data=data, proxies=proxy_dict).text
 
@@ -48,7 +48,7 @@ class MailRu:
 
 
 class Yahoo:
-    def __init__(self, email, proxy, user_agent):
+    def __init__(self, email, proxy, user_agent, username, password):
         def create_proxyauth_extension(
                 proxy_host,
                 proxy_port,
@@ -187,8 +187,8 @@ class Yahoo:
         proxyauth_plugin_path = create_proxyauth_extension(
             proxy_host=proxy_string.split(":", 1)[0],
             proxy_port=proxy_string.split(":", 1)[1],
-            proxy_username="",
-            proxy_password="",
+            proxy_username=username,
+            proxy_password=password,
         )
 
         display = Display(visible=False)

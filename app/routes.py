@@ -14,48 +14,72 @@ def if_email_exists():
     if post_data is None:
         return jsonify(
             status="ERROR",
-            msg="POST data is missing"
+            msg="post data is missing"
         )
     try:
         email = post_data["email"]
         if email is None:
             return jsonify(
                 status="ERROR",
-                msg="Missing email key."
+                msg="email is missing"
             )
         elif "@" not in email:
             return jsonify(
                 status="ERROR",
-                msg="Invalid email address."
+                msg="invalid email address"
             )
     except KeyError:
         return jsonify(
             status="ERROR",
-            msg="Missing email key."
+            msg="email key is missing"
+        )
+    try:
+        username = post_data["username"]
+        if username is None:
+            return jsonify(
+                status="ERROR",
+                msg="username is missing"
+            )
+    except KeyError:
+        return jsonify(
+            status="ERROR",
+            msg="username key is missing"
+        )
+    try:
+        password = post_data["password"]
+        if password is None:
+            return jsonify(
+                status="ERROR",
+                msg="password is missing"
+            )
+    except KeyError:
+        return jsonify(
+            status="ERROR",
+            msg="password key is missing"
         )
     try:
         proxy = post_data["proxy"]
         if proxy is None:
             return jsonify(
                 status="ERROR",
-                msg="Missing proxy key."
+                msg="proxy is missing"
             )
     except KeyError:
         return jsonify(
             status="ERROR",
-            msg="Missing proxy key."
+            msg="proxy key is missing"
         )
     user_agent = request.headers.get("User-Agent")
     if user_agent is None:
         return jsonify(
             status="ERROR",
-            msg="Missing User-Agent header."
+            msg="user-agent header is missing"
         )
 
     if user_agent != "Cron":
         return jsonify(
             status="ERROR",
-            msg="Access denied."
+            msg="access denied"
         )
     mail_ru_domains = [
         "mail.ru",
@@ -66,14 +90,26 @@ def if_email_exists():
     ]
     if email.split("@", 1)[1] in mail_ru_domains:
         return jsonify(
-            email_exists=MailRu(email=email, proxy=proxy, user_agent=user_agent).check
+            email_exists=MailRu(
+                email=email,
+                proxy=proxy,
+                user_agent=user_agent,
+                username=username,
+                password=password
+            ).check
         )
     elif "@yahoo." in email:
         return jsonify(
-            email_exists=Yahoo(email=email, proxy=proxy, user_agent=user_agent).check
+            email_exists=Yahoo(
+                email=email,
+                proxy=proxy,
+                user_agent=user_agent,
+                username=username,
+                password=password
+            ).check
         )
     else:
         return jsonify(
             status="ERROR",
-            msg="Invalid email address."
+            msg="invalid email address"
         )
