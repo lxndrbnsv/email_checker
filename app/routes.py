@@ -16,14 +16,26 @@ def if_email_exists():
             status="ERROR",
             msg="POST data is missing"
         )
-    email = post_data["email"]
-    if email is None:
+    try:
+        email = post_data["email"]
+        if email is None:
+            return jsonify(
+                status="ERROR",
+                msg="Missing email key."
+            )
+    except KeyError:
         return jsonify(
             status="ERROR",
             msg="Missing email key."
         )
-    proxy = post_data["proxy"]
-    if proxy is None:
+    try:
+        proxy = post_data["proxy"]
+        if proxy is None:
+            return jsonify(
+                status="ERROR",
+                msg="Missing proxy key."
+            )
+    except KeyError:
         return jsonify(
             status="ERROR",
             msg="Missing proxy key."
